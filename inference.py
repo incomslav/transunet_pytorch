@@ -45,6 +45,7 @@ class SegInference:
         preds = {}
         for p in path:
             file_name = p.split('/')[-1]
+            print(p)
             img, img_torch = self.read_and_preprocess(p)
             with torch.no_grad():
                 pred_mask = self.transunet.model(img_torch)

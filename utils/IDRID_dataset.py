@@ -8,19 +8,21 @@ from torch.utils.data import Dataset
 from config import cfg
 
 
-class DentalDataset(Dataset):
+class IDRIDDataset(Dataset):
     output_size = cfg.transunet.img_dim
     # output_size = 224
 
-    def __init__(self, path, transform):
+    def __init__(self, path, transform, lesion_type, train=True):
         super().__init__()
 
         self.transform = transform
 
         # img_folder = os.path.join(path, 'img')
         # mask_folder = os.path.join(path, 'mask')
-        img_folder = os.path.join(path, '1. Original Images/a. Training Set')
-        mask_folder = os.path.join(path, '2. All Segmentation Groundtruths/a. Training Set/3. Hard Exudates')
+
+        img_folder = os.path.join(path, 'images')
+        mask_folder = os.path.join(path, 'masks', lesion_type)
+
 
         self.img_paths = []
         self.mask_paths = []
@@ -28,7 +30,7 @@ class DentalDataset(Dataset):
             name = p.split('.')[0]
 
             self.img_paths.append(os.path.join(img_folder, name + '.jpg'))
-            self.mask_paths.append(os.path.join(mask_folder, name + '_EX.tif'))
+            self.mask_paths.append(os.path.join(mask_folder, name + '_' + lesion_type + '.tif'))
 
     def __getitem__(self, idx):
         if torch.is_tensor(idx):
@@ -80,7 +82,8 @@ if __name__ == '__main__':
     #                                 T.ToTensor()])
 
     # md = DentalDataset('/home/kara/Downloads/UFBA_UESC_DENTAL_IMAGES_DEEP/dataset_and_code/test/set/train', transform)
-    md = DentalDataset('/Users/hasan/Myprojects/DFKI/DR_Grading_Projects/data/IDRID_segmentation/Segmentation', transform)
+    md = IDRIDDataset('/Users/hasan/Myprojects/DFKI/DR_Grading_Projects/data/IDRID_segmentation/Segmentation',
+                      transform, lesion_type='EX')
 
 
     for sample in md:

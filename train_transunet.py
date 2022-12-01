@@ -7,6 +7,8 @@ from utils.utils import dice_loss
 from config import cfg
 
 
+
+
 class TransUNetSeg:
     def __init__(self, device):
         self.device = device
@@ -36,6 +38,7 @@ class TransUNetSeg:
         self.optimizer.zero_grad()
         pred_mask = self.model(params['img'])
         loss = self.criterion(pred_mask, params['mask'])
+        
         loss.backward()
         self.optimizer.step()
 

@@ -16,6 +16,7 @@ def main_pipeline(parser):
         ttp = TrainTestPipe(train_path=parser.train_path,
                             test_path=parser.test_path,
                             model_path=parser.model_path,
+                            lesion_type=parser.lesion_type,
                             device=device)
 
         ttp.train()
@@ -36,6 +37,7 @@ if __name__ == '__main__':
     parser.add_argument('--test_path', required='train' in sys.argv, type=str, default=None)
 
     parser.add_argument('--image_path', required='infer' in sys.argv, type=str, default=None)
+    parser.add_argument('--lesion_type', required='train' in sys.argv, type=str, default='EX')
     parser = parser.parse_args()
 
     main_pipeline(parser)
